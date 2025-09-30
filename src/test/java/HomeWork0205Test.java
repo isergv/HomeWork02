@@ -169,27 +169,16 @@ public class HomeWork0205Test extends BasePage {
         //Использовал слип, потом shouldBe(visible) для элемента на странице.
         //Но как проверить отсутствие модалки - не понял (
         //sleep(20000);
-        System.out.println("1");
         $x(String.format(Locators.textP, "Общая сумма выплат: ")).shouldBe(visible);
-        System.out.println("2");
         $x(String.format(Locators.textP, "Сумма кредита: ")).shouldBe(text(result_amount));
-        System.out.println("3");
         $x(String.format(Locators.textP, "Срок кредита: ")).shouldBe(text(result_term));
-        System.out.println("4");
         $x(String.format(Locators.textP, "Процентная ставка: ")).shouldBe(text(result_rate));
-        System.out.println("5");
         $x(String.format(Locators.textP, "Тип платежа: ")).shouldBe(text(result_payment_type));
-        System.out.println("6 " + first_payment);
         $x(String.format(Locators.textP, "Первый платёж: ")).shouldBe(text(first_payment));
-        System.out.println("7");
         $x(String.format(Locators.textP, "Последний платёж: ")).shouldBe(text(last_payment));
-        System.out.println("8");
+        //todo Не понял в чём ошибка
         //$x(String.format(Locators.textP, "Платежи уменьшаются каждый месяц. Детальную информацию смотрите в графике платежей")).shouldBe(text(text));
-        System.out.println("9");
         $x(String.format(Locators.textP, "Переплата по кредиту: ")).shouldBe(text(overpayment));
-        System.out.println("10");
         $x(String.format(Locators.textP, "Общая сумма выплат: ")).shouldBe(text(total_payment));
     }
-
-
 }
