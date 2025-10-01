@@ -33,4 +33,9 @@ public class Locators {
     static final String text = "//*[contains(., '%s')]/span";
     static final String textR = "//*[contains(., '%s')]";
     static final String textP = "//p[contains(., '%s')]/span";
+
+    //Модалка прогресса рассчета
+    //Атрибут style="display: block; - модалка на экране
+    //Атрибут style="display: none; - модалка не отображается
+    static final String calculation = "//div[@id='calculation-modal']";
 }
