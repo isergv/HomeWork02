@@ -7,6 +7,7 @@ import static com.codeborne.selenide.Selenide.*;
 public class BasePage {
 
     Locators locators = new Locators();
+    Calc calc = new Calc();
 
     @BeforeAll
     static void before_all(TestInfo test_info) {

@@ -38,4 +38,7 @@ public class Locators {
     //Атрибут style="display: block; - модалка на экране
     //Атрибут style="display: none; - модалка не отображается
     static final String calculation = "//div[@id='calculation-modal']";
+
+    //Таблица графика платежей
+    static final String table = "//tbody/tr[%s]/td[%s]";
 }

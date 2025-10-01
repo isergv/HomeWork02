@@ -5,6 +5,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.Keys;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.switchTo;
 
 public class HomeWork0205Test extends BasePage {
 
@@ -59,6 +60,8 @@ public class HomeWork0205Test extends BasePage {
             "'Сумма кредита, руб.', -1, 'Ошибка: Введите сумму от 1000 до 10000000 рублей'",
             "'Сумма кредита, руб.', 0, 'Ошибка: Введите сумму от 1000 до 10000000 рублей'",
             "'Сумма кредита, руб.', 10000001, 'Ошибка: Введите сумму от 1000 до 10000000 рублей'",
+            "'Сумма кредита, руб.', 10000,01, 'Ошибка: Введите сумму от 1000 до 10000000 рублей'",
+            "'Сумма кредита, руб.', 10000,021, 'Ошибка: Введите сумму от 1000 до 10000000 рублей'",
             "'Срок кредита, месяцев', -1, 'Ошибка: Введите срок от 1 до 360 месяцев'",
             "'Срок кредита, месяцев', 0, 'Ошибка: Введите срок от 1 до 360 месяцев'",
             "'Срок кредита, месяцев', 361, 'Ошибка: Введите срок от 1 до 360 месяцев'",
@@ -153,6 +156,74 @@ public class HomeWork0205Test extends BasePage {
         $x(String.format(Locators.textP, "Общая сумма выплат: ")).shouldBe(text(total_payment));
     }
 
-    //todo Кнопка Выполнить новый расчёт
-    //todo Кнопка Открыть график платежей и проверить элементы в окне График платежей
+    //Проверка таблицы платежей
+    @Test
+    @DisplayName("09. Проверка таблицы платежей. Дифференцированный.")
+    void test_calc_09() {
+        $x(String.format(Locators.fieldName, "Сумма кредита, руб.")).setValue("2345");
+        $x(String.format(Locators.fieldName, "Срок кредита, месяцев")).setValue("5");
+        $x(String.format(Locators.fieldName, "Процентная ставка, % годовых")).setValue("3");
+        $x(String.format(Locators.radioName, "Дифференцированный")).click();
+        $x(String.format(Locators.buttonName, "Рассчитать")).click();
+        $x(String.format(Locators.textP, "Общая сумма выплат: ")).shouldBe(visible);
+        $x(String.format(Locators.buttonName, "Открыть график платежей")).click();
+        switchTo().window(1);
+        $x(String.format(Locators.pageTitleH2, "График платежей")).shouldBe(text("График платежей"));
+        $x(String.format(Locators.textP, "Сумма кредита: ")).shouldBe(text("2345.00"));
+        $x(String.format(Locators.textP, "Срок кредита: ")).shouldBe(text("5"));
+        $x(String.format(Locators.textP, "Процентная ставка: ")).shouldBe(text("3"));
+        $x(String.format(Locators.textP, "Тип платежа: ")).shouldBe(text("Дифференцированный"));
+
+        String[][] creditInfo = {
+                {"1", "474.86", "469.00", "5.86", "1876.00"},
+                {"2", "473.69", "469.00", "4.69", "1407.00"},
+                {"3", "472.52", "469.00", "3.52", "938.00"},
+                {"4", "471.35", "469.00", "2.35", "469.00"},
+                {"5", "470.17", "469.00", "1.17", "0.00"}
+        };
+
+        calc.creditCalc(creditInfo);
+    }
+
+    @Test
+    @DisplayName("10. Проверка таблицы платежей. Аннуитетный. ")
+    void test_calc_10() {
+        $x(String.format(Locators.fieldName, "Сумма кредита, руб.")).setValue("2345");
+        $x(String.format(Locators.fieldName, "Срок кредита, месяцев")).setValue("5");
+        $x(String.format(Locators.fieldName, "Процентная ставка, % годовых")).setValue("3");
+        $x(String.format(Locators.radioName, "Аннуитетный")).click();
+        $x(String.format(Locators.buttonName, "Рассчитать")).click();
+        $x(String.format(Locators.textP, "Общая сумма выплат: ")).shouldBe(visible);
+        $x(String.format(Locators.buttonName, "Открыть график платежей")).click();
+        switchTo().window(1);
+        $x(String.format(Locators.pageTitleH2, "График платежей")).shouldBe(text("График платежей"));
+        $x(String.format(Locators.textP, "Сумма кредита: ")).shouldBe(text("2345.00"));
+        $x(String.format(Locators.textP, "Срок кредита: ")).shouldBe(text("5"));
+        $x(String.format(Locators.textP, "Процентная ставка: ")).shouldBe(text("3"));
+        $x(String.format(Locators.textP, "Тип платежа: ")).shouldBe(text("Аннуитетный"));
+
+        String[][] creditInfo = {
+                {"1", "472.52", "466.66", "5.86", "1878.34"},
+                {"2", "472.52", "467.82", "4.70", "1410.52"},
+                {"3", "472.52", "468.99", "3.53", "941.52"},
+                {"4", "472.52", "470.17", "2.35", "471.36"},
+                {"5", "472.52", "471.34", "1.18", "0.02"}
+        };
+
+        calc.creditCalc(creditInfo);
+    }
+
+    //Проверка кнопки 'Выполнить новый расчёт'
+    @Test
+    @DisplayName("11. Проверка кнопки 'Выполнить новый расчёт'")
+    void test_calc_11() {
+        $x(String.format(Locators.fieldName, "Сумма кредита, руб.")).setValue("2345");
+        $x(String.format(Locators.fieldName, "Срок кредита, месяцев")).setValue("5");
+        $x(String.format(Locators.fieldName, "Процентная ставка, % годовых")).setValue("3");
+        $x(String.format(Locators.radioName, "Аннуитетный")).click();
+        $x(String.format(Locators.buttonName, "Рассчитать")).click();
+        $x(String.format(Locators.textP, "Общая сумма выплат: ")).shouldBe(visible);
+        $x(String.format(Locators.buttonName, "Выполнить новый расчёт")).click();
+        $x(String.format(Locators.pageTitleH1, "Калькулятор кредита")).shouldBe();
+    }
 }
