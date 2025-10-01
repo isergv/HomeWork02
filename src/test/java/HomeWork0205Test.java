@@ -131,6 +131,7 @@ public class HomeWork0205Test extends BasePage {
         $x(String.format(Locators.fieldName, "Процентная ставка, % годовых")).setValue(rate);
         $x(String.format(Locators.radioName, "Аннуитетный")).click();
         $x(String.format(Locators.buttonName, "Рассчитать")).click();
+        $x(String.format(Locators.calculation)).getAttribute("style");
         //$x(String.format(Locators.textR, "Прервать расчёт")).shouldBe(disappear);
         //Не смог справиться с ожиданием, когда пропадет модалка подсчёта, перепробовал кучу методов, не получается
         //Пришлось увеличить время ожидания и появления кнопки открытия графика платежей
